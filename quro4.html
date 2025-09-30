@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quro Health Assistant</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #fff;
+      color: #333;
+    }
+    /* Navbar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 50px;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    nav .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2a9d8f;
+    }
+    
+    .menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  background: #f5f5f5;
+  
+}
+.menu > li {
+  position: relative;   /* needed for absolutely-positioned submenu */
+}
+.menu > li > a {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #000000;
+  background-color: white;
+  font-size: larger;
+}
+    .submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%;     /* show below parent item */
+  left: 0;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: none; /* hide initially */
+}
+.submenu li a {
+  display: block;
+  padding: 8px 16px;
+  color: #000000;
+  text-decoration: none;
+}
+.submenu li a:hover {
+  background: #eee;
+}
+
+/* show submenu when Features is hovered */
+.has-submenu:hover .submenu {
+  display: block;
+}
+
+    nav .icons {
+      display: flex;
+      gap: 25px;
+      font-size: 35px;
+      cursor: pointer;
+    }
+    
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 50px 80px;
+    }
+    .hero-text {
+      flex: 1;
+    }
+    .hero-text h1 {
+      font-size: 75px;
+      color: #6c63ff;
+      margin: 0;
+    }
+    .hero-text h2 {
+      font-size: 35px;
+      color: #2a9d8f;
+      margin: 10px 0;
+    }
+    .hero-text p {
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 20px 0;
+    }
+    .hero-text button {
+      background: #2a9d8f;
+      border: none;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .hero-text button:hover {
+      background: #21867a;
+    }
+
+    /* Doctor Image */
+    .hero-img {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+    .hero-img img {
+      width: 350px;
+      border-radius: 50%;
+      border: 5px solid #2a9d8f;
+    }
+
+    /* Chat Bar */
+    .chat-bar {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #3db6a3;
+      display: flex;
+      align-items: center;
+      width: 70%;
+      max-width: 600px;
+      border-radius: 40px;
+      padding: 12px 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+    .chat-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 10px;
+      font-size: 16px;
+      background: transparent;
+      color: white;
+    }
+    .chat-bar input::placeholder {
+      color: #e0f2f1;
+    }
+    .chat-bar button {
+      background: #fff;
+      border: none;
+      color: #2a9d8f;
+      font-size: 20px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .chat-bar button:hover {
+      background: #e0f2f1;
+    }
+
+    /* Chat Box (Popup) */
+    .chat-box {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      right: 50px;
+      width: 350px;
+      height: 450px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      overflow: hidden;
+      flex-direction: column;
+    }
+    .chat-header {
+      background: #2a9d8f;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .chat-content {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+    .message {
+      margin: 8px 0;
+      padding: 8px 12px;
+      border-radius: 12px;
+      max-width: 75%;
+    }
+    .user {
+      background: #e0f2f1;
+      align-self: flex-end;
+    }
+    .bot {
+      background: #f0f0f0;
+      align-self: flex-start;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo"><img src="Picsart_25-09-18_16-43-36-205.png" height="75"width="125"></div>
+    <ul class="menu">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Appointment</a></li>
+  
+
+    <!-- Features with sub-topics -->
+    <li class="has-submenu">
+      <a href="#">Features ▾</a>
+      <ul class="submenu">
+        <li><a href="#">Progress</a></li>
+        <li><a href="#">shopping</a></li>
+      </ul>
+    </li>
+
+    <li><a href="#">Contact</a></li>
+  </ul>
+    <div class="icons">🔔 👤</div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>AI</h1>
+      <h2>that listens, learns and cares</h2>
+      <p>Wellness at your fingertips means having instant access to reliable health guidance, personalized support, and everyday care anytime, anywhere—right from your device.</p>
+      <button>Learn more</button>
+    </div>
+    <div class="hero-img">
+      <img src="Picsart_25-09-18_23-39-48-209.png" alt="Doctor">
+    </div>
+  </section>
+
+  <!-- Chat Bar -->
+  <div class="chat-bar">
+    <input type="text" id="user-input" placeholder="Type your health question...">
+    <button onclick="mic">🎙️</button>
+    <button onclick="sendMessage()"> ➤ </button>
+  </div>
+
+  <!-- Chat Box -->
+  <div class="chat-box" id="chat-box">
+    <div class="chat-header">Healthcare Assistant</div>
+    <div class="chat-content" id="chat-content"></div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("user-input");
+      const chatContent = document.getElementById("chat-content");
+      const chatBox = document.getElementById("chat-box");
+
+      const message = input.value.trim();
+      if (!message) return;
+
+      chatBox.style.display = "flex";
+
+      // Display user message
+      const userMsg = document.createElement("div");
+      userMsg.className = "message user";
+      userMsg.innerText = message;
+      chatContent.appendChild(userMsg);
+      chatContent.scrollTop = chatContent.scrollHeight;
+
+      input.value = "";
+
+      // Send to Flask backend
+      const res = await fetch("http://localhost:5000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await res.json();
+      console.log("API response",data);
+
+      // Display bot response
+      const botMsg = document.createElement("div");
+      botMsg.className = "message bot";
+      botMsg.innerText = data.response;
+      chatContent.appendChild(botMsg);
+      chatContent.scrollTop = chatContent.scrollHeight;
+    }
+  </script>
+</body>
+</html>
